@@ -23,6 +23,11 @@ body{
   margin-bottom: 1em;
 }
 
+.icons {
+  display: flex;
+  align-items: center;
+}
+
 i{
   padding: 7px;
   cursor: pointer;
@@ -42,6 +47,12 @@ i{
 .search-container.active {
   visibility: visible;
   opacity: 1;
+}
+
+.search-container form {
+  display: flex;
+  align-items: center; 
+  gap: 5px;
 }
 
 .search-container button{
@@ -158,6 +169,10 @@ i{
 
   .menu-icon {
       display: inline-block !important; 
+  }
+
+  .search-container form input {
+    max-width: 50%;
   }
 }
 
