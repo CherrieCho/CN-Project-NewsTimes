@@ -15,6 +15,26 @@
   <body>
     <section class="container">
       <section>
+        <div class="top-bar">
+          <div class="icons">
+            <i
+              class="fa-solid fa-bars fa-lg menu-icon"
+              style="color: black"
+              onclick="openNav()"
+            ></i>
+            <i
+              class="fa-solid fa-magnifying-glass fa-lg"
+              style="color: black"
+              onclick="toggleSearch()"
+            ></i>
+          </div>
+          <div class="search-container">
+            <form action="">
+              <input type="text" placeholder="search..." />
+              <button type="submit">Go</button>
+            </form>
+          </div>
+        </div>
         <div class="head-line">
           <svg viewBox="0 0 184 25" fill="#000000" aria-hidden="true">
             <path
@@ -23,39 +43,29 @@
           </svg>
         </div>
         <div class="menu">
-          <button>Sports</button>
-          <button>Tech</button>
-          <button>World</button>
-          <button>Finance</button>
-          <button>Politics</button>
           <button>Business</button>
-          <button>Economics</button>
           <button>Entertainment</button>
-          <button>Beauty</button>
-          <button>Travel</button>
-          <button>Music</button>
-          <button>Food</button>
-          <button>Science</button>
-          <button>Games</button>
+          <button>General</button>
           <button>Health</button>
+          <button>Science</button>
+          <button>Sports</button>
+          <button>Technology</button>
+        </div>
+        <div id="mySidenav" class="sidenav">
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+            >&times;</a
+          >
+          <a href="#">Business</a>
+          <a href="#">Entertainment</a>
+          <a href="#">General</a>
+          <a href="#">Health</a>
+          <a href="#">Science</a>
+          <a href="#">Sports</a>
+          <a href="#">Technology</a>
         </div>
       </section>
 
-      <section>
-        <div class="row news">
-          <div class="col-lg-4">
-            <img
-              class="img-size"
-              src="https://pbs.twimg.com/media/DgNb9OZUEAAmONL?format=jpg&name=small"
-            />
-          </div>
-          <div class="col-lg-8">
-            <h2>엘모짤</h2>
-            <p>엘모가 충격을 받은 모습이다.</p>
-            <div>세서미 스트리트 빅버드 기자</div>
-          </div>
-        </div>
-      </section>
+      <section id="news-board"></section>
     </section>
 
     <script
@@ -64,5 +74,10 @@
       crossorigin="anonymous"
     ></script>
     <script src="main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/30e0337192.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
