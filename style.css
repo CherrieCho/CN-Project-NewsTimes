@@ -117,6 +117,21 @@ i{
   margin-bottom: 0.7em;
 }
 
+.col-lg-8 a:link{
+  text-decoration: none;
+  color: black;
+}
+
+.col-lg-8 a:visited{
+  text-decoration: none;
+  color: #99209B;
+}
+
+.col-lg-8 a:hover{
+  color: #0A58CA;
+  text-decoration: underline;
+}
+
 /* 사이드 메뉴 내비게이션 */
 .sidenav {
   height: 100%; /* 100% Full-height */

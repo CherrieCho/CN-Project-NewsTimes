@@ -13,10 +13,23 @@ menus.forEach((button) =>
 
 //뉴스 가져와서 배열 업뎃 후 렌더하는 함수(공통부분)
 const getNews = async () => {
-  const response = await fetch(url);
-  const data = await response.json();
-  newsList = data.articles;
-  render();
+  //에러 핸들링
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (response.status === 200) {
+      //검색 결과가 없는 경우
+      if (data.totalResults === 0) {
+        throw new Error("검색 결과가 없습니다.");
+      }
+      newsList = data.articles;
+      render();
+    } else {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    renderError(error.message);
+  }
 };
 
 //전체 뉴스 가져오기
@@ -55,7 +68,10 @@ function openNav() {
 
   //button 태그에 이벤트리스너 추가
   sideMenus.forEach((button) =>
-    button.addEventListener("click", (event) => getNewsByCategory(event))
+    button.addEventListener("click", (event) => {
+      getNewsByCategory(event);
+      closeNav();
+    })
   );
 }
 
@@ -94,7 +110,7 @@ const render = () => {
             />
           </div>
           <div class="col-lg-8">
-            <h2>${item.title}</h2>
+            <h2><a href=${item.url} target="_blank">${item.title}</a></h2>
             <p>${item.description}</p>
             <div>${item.source.name} * ${time}</div>
           </div>
@@ -102,4 +118,13 @@ const render = () => {
   });
 
   document.querySelector("#news-board").innerHTML = newsHTML.join("");
+};
+
+//에러메시지 보여주는 함수
+const renderError = (errorMessage) => {
+  document.querySelector(
+    "#news-board"
+  ).innerHTML = `<div class="alert alert-light" role="alert" style="text-align: center;">
+  ${errorMessage}
+</div>`;
 };
