@@ -3,6 +3,11 @@ let newsList = [];
 let url = new URL(
   `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`
 );
+//페이지네이션 관련 변수
+let totalResults = 0;
+let page = 1;
+const pageSize = 10;
+const groupSize = 5;
 
 const headLine = document.querySelector(".head-line svg");
 const menus = document.querySelectorAll(".menu button");
@@ -15,6 +20,10 @@ menus.forEach((button) =>
 const getNews = async () => {
   //에러 핸들링
   try {
+    //페이지 정보(&page=page 속성을 url 쿼리에 추가)
+    url.searchParams.set("page", page);
+    url.searchParams.set("pageSize", pageSize);
+
     const response = await fetch(url);
     const data = await response.json();
     if (response.status === 200) {
@@ -23,7 +32,9 @@ const getNews = async () => {
         throw new Error("검색 결과가 없습니다.");
       }
       newsList = data.articles;
+      totalResults = data.totalResults;
       render();
+      paginationRender();
     } else {
       throw new Error(data.message);
     }
@@ -39,7 +50,6 @@ const getLatestNews = async () => {
   );
   getNews();
 };
-getLatestNews();
 
 //카테고리별 뉴스
 const getNewsByCategory = async (event) => {
@@ -128,3 +138,55 @@ const renderError = (errorMessage) => {
   ${errorMessage}
 </div>`;
 };
+
+//페이지네이션
+const paginationRender = () => {
+  //pageGroup: 해당 페이지가 속한 페이지 그룹 번호는?
+  const pageGroup = Math.ceil(page / groupSize);
+
+  //totalPages: 총 페이지 개수
+  const totalPages = Math.ceil(totalResults / pageSize);
+
+  //lastPage: 해당 페이지가 속한 그룹에 있는 마지막 페이지 번호?
+  const lastPage = pageGroup * groupSize;
+
+  //페이지 개수가 그룹 사이즈보다 작을 경우
+  if (lastPage > totalPages) {
+    lastPage = totalPages;
+  }
+
+  //firstPage: 해당 페이지가 속한 그룹에 있는 첫번째 페이지 번호?
+  const firstPage =
+    lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1);
+
+  let paginationHTML = ``;
+
+  for (let i = firstPage; i <= lastPage; i++) {
+    paginationHTML += `<li class="page-item ${
+      i === page ? "active" : ""
+    }" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`;
+  }
+
+  document.querySelector(".pagination").innerHTML = paginationHTML;
+
+  // <li class="page-item">
+  //           <a class="page-link" href="#" aria-label="Previous">
+  //             <span aria-hidden="true">&laquo;</span>
+  //           </a>
+  //         </li>
+  //         <li class="page-item"><a class="page-link" href="#">1</a></li>
+  //         <li class="page-item"><a class="page-link" href="#">2</a></li>
+  //         <li class="page-item"><a class="page-link" href="#">3</a></li>
+  //         <li class="page-item">
+  //           <a class="page-link" href="#" aria-label="Next">
+  //             <span aria-hidden="true">&raquo;</span>
+  //           </a>
+  //         </li>
+};
+
+const moveToPage = (pageNum) => {
+  page = pageNum;
+  getNews();
+};
+
+getLatestNews();

@@ -184,6 +184,16 @@ i{
   margin-left: 50px;
 }
 
+nav{
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.pagination li{
+  cursor: pointer;
+}
+
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
