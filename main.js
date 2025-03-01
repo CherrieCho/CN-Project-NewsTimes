@@ -148,7 +148,7 @@ const paginationRender = () => {
   const totalPages = Math.ceil(totalResults / pageSize);
 
   //lastPage: 해당 페이지가 속한 그룹에 있는 마지막 페이지 번호?
-  const lastPage = pageGroup * groupSize;
+  let lastPage = pageGroup * groupSize;
 
   //페이지 개수가 그룹 사이즈보다 작을 경우
   if (lastPage > totalPages) {
