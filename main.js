@@ -45,6 +45,7 @@ const getNews = async () => {
 
 //전체 뉴스 가져오기
 const getLatestNews = async () => {
+  page = 1;
   url = new URL(
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`
   );
@@ -54,6 +55,7 @@ const getLatestNews = async () => {
 //카테고리별 뉴스
 const getNewsByCategory = async (event) => {
   const category = event.target.textContent.toLowerCase();
+  page = 1;
   url = new URL(
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&category=${category}`
   );
@@ -64,6 +66,7 @@ const getNewsByCategory = async (event) => {
 const getNewsByKeyword = async (event) => {
   event.preventDefault();
   const keyword = document.getElementById("search-input").value.toLowerCase();
+  page = 1;
   url = new URL(
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&q=${keyword}`
   );
@@ -161,27 +164,45 @@ const paginationRender = () => {
 
   let paginationHTML = ``;
 
+  if (pageGroup === 1) {
+    paginationHTML = ``;
+  } else {
+    paginationHTML = `  <li class="page-item" onclick="moveToPage(${1})">
+                      <a class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li><li class="page-item" onclick="moveToPage(${
+                      page - 1
+                    })">
+                      <a class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">&lt;</span>
+                      </a>
+                    </li>`;
+  }
+
   for (let i = firstPage; i <= lastPage; i++) {
     paginationHTML += `<li class="page-item ${
       i === page ? "active" : ""
     }" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`;
   }
 
-  document.querySelector(".pagination").innerHTML = paginationHTML;
+  if (pageGroup === Math.ceil(totalPages / groupSize)) {
+    paginationHTML += ``;
+  } else {
+    paginationHTML += `          <li class="page-item" onclick="moveToPage(${
+      page + 1
+    })">
+            <a class="page-link" aria-label="Next">
+              <span aria-hidden="true">&gt;</span>
+            </a>
+          </li><li class="page-item" onclick="moveToPage(${totalPages})">
+            <a class="page-link" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>`;
+  }
 
-  // <li class="page-item">
-  //           <a class="page-link" href="#" aria-label="Previous">
-  //             <span aria-hidden="true">&laquo;</span>
-  //           </a>
-  //         </li>
-  //         <li class="page-item"><a class="page-link" href="#">1</a></li>
-  //         <li class="page-item"><a class="page-link" href="#">2</a></li>
-  //         <li class="page-item"><a class="page-link" href="#">3</a></li>
-  //         <li class="page-item">
-  //           <a class="page-link" href="#" aria-label="Next">
-  //             <span aria-hidden="true">&raquo;</span>
-  //           </a>
-  //         </li>
+  document.querySelector(".pagination").innerHTML = paginationHTML;
 };
 
 const moveToPage = (pageNum) => {
